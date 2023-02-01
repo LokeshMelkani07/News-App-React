@@ -2,11 +2,11 @@ import React from "react";
 import Stories from "./Stories";
 import Pagination from "./Pagination";
 import Search from "./Search";
+import "./App.css";
 
 const App = () => {
   return (
     <>
-      <h1>Welcome to our News App</h1>
       <Search />
       <Pagination />
       <Stories />

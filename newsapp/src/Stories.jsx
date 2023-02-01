@@ -1,26 +1,35 @@
 import React from "react";
-import { useEffect } from "react";
-
+import { useGlobalContext } from "./context";
+import SpinnerLoader from "./Loader/loader";
 const Stories = () => {
-  let API = "https://hn.algolia.com/api/v1/search?";
-
-  const fetchApiData = async (url) => {
-    try {
-      const res = await fetch(url);
-      const data = await res.json();
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    fetchApiData(API);
-  }, []);
-
+  const { hits, ngPages, isloading, removePost } = useGlobalContext();
+  if (isloading) {
+    return <SpinnerLoader />;
+  }
   return (
     <>
-      <h2>Tech News</h2>
+      <div className="stories-div">
+        {hits.map((curr) => {
+          const { title, author, objectID, url, num_comments } = curr;
+          return (
+            <div className="card" key={objectID}>
+              <h2>{title}</h2>
+              <p>
+                By <span> {author} </span> | <span> {num_comments} </span>
+                comments
+              </p>
+              <div className="card-button">
+                <a href={url} target="_blank">
+                  Read More
+                </a>
+                <a href="#" onClick={() => removePost(objectID)}>
+                  Remove
+                </a>
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </>
   );
 };
